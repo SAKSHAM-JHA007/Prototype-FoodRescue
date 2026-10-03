@@ -198,7 +198,7 @@ const INITIAL_DONATIONS: Donation[] = [
     lat: 13.3512,
     lng: 74.7905,
     address: 'Student Plaza, Campus Hub, Manipal',
-    status: 'ACCEPTED',
+    status: 'PICKUP_PENDING',
     urgency: 'MEDIUM',
     imageUrl: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80',
     notes: 'Kept in warming tray. Great for immediate distribution.',
@@ -381,6 +381,17 @@ export class FoodRescueStore {
       this.orgs = savedOrgs ? JSON.parse(savedOrgs) : INITIAL_ORGS;
       this.history = savedHistory ? JSON.parse(savedHistory) : INITIAL_HISTORY;
       this.automationLogs = savedLogs ? JSON.parse(savedLogs) : INITIAL_AUTOMATION_LOGS;
+
+      const savedVolunteer = localStorage.getItem('foodrescue_volunteer');
+      if (savedVolunteer) {
+        this.volunteer = JSON.parse(savedVolunteer);
+      }
+
+      // Auto-heal any stale DON-102 status from earlier localStorage runs
+      const d102 = this.donations.find(d => d.id === 'DON-102');
+      if (d102 && d102.status === 'ACCEPTED' && d102.pickupMode === 'volunteer') {
+        d102.status = 'PICKUP_PENDING';
+      }
     } catch {
       this.donations = INITIAL_DONATIONS;
       this.orgs = INITIAL_ORGS;
@@ -395,6 +406,7 @@ export class FoodRescueStore {
       localStorage.setItem('foodrescue_orgs', JSON.stringify(this.orgs));
       localStorage.setItem('foodrescue_history', JSON.stringify(this.history));
       localStorage.setItem('foodrescue_n8n_logs', JSON.stringify(this.automationLogs));
+      localStorage.setItem('foodrescue_volunteer', JSON.stringify(this.volunteer));
     } catch (e) {
       console.error("Storage error:", e);
     }
@@ -645,8 +657,14 @@ export class FoodRescueStore {
   // Volunteer Accepts Task (Volunteer Flow)
   public volunteerAcceptTask(donationId: string): boolean {
     const donation = this.donations.find(d => d.id === donationId);
-    if (!donation || donation.status !== 'PICKUP_PENDING') return false;
+    if (!donation) return false;
+    
+    // Allow accepting if PICKUP_PENDING or ACCEPTED with volunteer mode
+    if (donation.status !== 'PICKUP_PENDING' && !(donation.status === 'ACCEPTED' && donation.pickupMode === 'volunteer')) {
+      return false;
+    }
 
+    donation.status = 'PICKUP_PENDING';
     donation.volunteerId = this.volunteer.id;
     donation.volunteerName = this.volunteer.name;
     this.volunteer.activeTaskId = donationId;
@@ -664,6 +682,102 @@ export class FoodRescueStore {
     this.triggerN8nWebhook('volunteer.task_accepted', donation, `Volunteer ${this.volunteer.name} accepted pickup route.`);
     this.saveState();
     return true;
+  }
+
+  // Volunteer Cancels Task (Releases back to volunteer pool)
+  public volunteerCancelTask(donationId: string): boolean {
+    const donation = this.donations.find(d => d.id === donationId);
+    if (!donation) return false;
+
+    donation.volunteerId = undefined;
+    donation.volunteerName = undefined;
+    if (this.volunteer.activeTaskId === donationId) {
+      this.volunteer.activeTaskId = undefined;
+    }
+
+    // Keep it as PICKUP_PENDING so another volunteer can accept
+    if (donation.status === 'IN_TRANSIT') {
+      donation.status = 'PICKUP_PENDING';
+    }
+
+    this.history.push({
+      id: `HIST-${Date.now()}`,
+      donationId: donation.id,
+      fromStatus: donation.status,
+      toStatus: 'PICKUP_PENDING',
+      actor: `${this.volunteer.name} (Released)`,
+      reasonCode: 'VOLUNTEER_RELEASED_TO_POOL',
+      timestamp: new Date().toISOString()
+    });
+
+    this.saveState();
+    return true;
+  }
+
+  // Update Volunteer Availability and Distance Radius
+  public updateVolunteerAvailability(available: boolean, maxDistanceKm?: number) {
+    this.volunteer.available = available;
+    if (maxDistanceKm !== undefined) {
+      this.volunteer.maxDistanceKm = maxDistanceKm;
+    }
+    this.saveState();
+  }
+
+  // Simulate Instant Demo Volunteer Run
+  public createDemoVolunteerTask(): Donation {
+    const providers = this.orgs.filter(o => o.type !== 'ngo' && o.type !== 'shelter');
+    const ngos = this.orgs.filter(o => o.type === 'ngo' || o.type === 'shelter');
+    const provider = providers[Math.floor(Math.random() * providers.length)] || this.orgs[0];
+    const ngo = ngos[Math.floor(Math.random() * ngos.length)] || this.orgs[4];
+
+    const newId = `DON-${Math.floor(200 + Math.random() * 800)}`;
+    const sampleFoods = [
+      { name: 'Hostel Evening Refreshments & Sandwiches', servings: 40, type: 'Vegetarian' },
+      { name: 'Conference Lunch Buffet Surplus (Rice & Curries)', servings: 75, type: 'Vegetarian' },
+      { name: 'Cafeteria Dinner Surplus - Chapati & Dal Fry', servings: 60, type: 'Vegetarian' },
+      { name: 'Bakery Rolls, Puffs & Fruit Baskets', servings: 50, type: 'Vegetarian' }
+    ];
+    const picked = sampleFoods[Math.floor(Math.random() * sampleFoods.length)];
+
+    const newDonation: Donation = {
+      id: newId,
+      providerOrgId: provider.id,
+      providerName: provider.name,
+      foodName: picked.name,
+      servingsListed: picked.servings,
+      dietaryType: picked.type as any,
+      allergens: [],
+      packaging: 'Packed Containers',
+      preparedAt: new Date(Date.now() - 40 * 60 * 1000).toISOString(),
+      safeUntil: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
+      lat: provider.lat,
+      lng: provider.lng,
+      address: provider.address,
+      status: 'PICKUP_PENDING',
+      urgency: 'URGENT',
+      imageUrl: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80',
+      notes: 'Freshly packed surplus meals waiting for campus volunteer transport.',
+      createdAt: new Date().toISOString(),
+      acceptedByOrgId: ngo.id,
+      acceptedByOrgName: ngo.name,
+      pickupMode: 'volunteer',
+      pickupCode: generateCode(),
+      deliveryCode: generateCode()
+    };
+
+    this.donations.unshift(newDonation);
+    this.history.push({
+      id: `HIST-${Date.now()}`,
+      donationId: newId,
+      fromStatus: 'OPEN',
+      toStatus: 'PICKUP_PENDING',
+      actor: `${ngo.name} (Requested Volunteer)`,
+      reasonCode: 'VOLUNTEER_DISPATCH_TRIGGERED',
+      timestamp: new Date().toISOString()
+    });
+
+    this.saveState();
+    return newDonation;
   }
 
   // Confirm Pickup with Verification Code (Provider & Volunteer/Driver handoff)
