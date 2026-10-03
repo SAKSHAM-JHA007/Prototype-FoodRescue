@@ -393,7 +393,7 @@ export const ProviderDashboard: React.FC<ProviderDashboardProps> = ({
           <div className="flex items-center justify-between">
             <h3 className="font-bold text-slate-900 text-base">Campus Waste Diversion Metrics</h3>
             <span className="text-xs font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
-              MIT Campus Pilot
+              BMSIT Campus Pilot
             </span>
           </div>
 

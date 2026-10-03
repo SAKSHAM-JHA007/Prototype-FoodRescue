@@ -475,7 +475,7 @@ export const VolunteerDashboard: React.FC<VolunteerDashboardProps> = ({
                 <div className="p-2.5 bg-slate-50 border-t border-slate-200 grid grid-cols-3 text-center divide-x divide-slate-200 text-xs">
                   <div>
                     <span className="text-[10px] text-slate-400 block font-semibold">FROM</span>
-                    <span className="font-bold text-slate-800 truncate block text-[11px]">MIT Mess</span>
+                    <span className="font-bold text-slate-800 truncate block text-[11px]">{activeTask.providerName || 'BMSIT Mess'}</span>
                   </div>
                   <div>
                     <span className="text-[10px] text-slate-400 block font-semibold">VIA</span>

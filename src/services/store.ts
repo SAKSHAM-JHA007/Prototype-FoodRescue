@@ -13,9 +13,9 @@ import {
 const INITIAL_ORGS: Organization[] = [
   {
     id: 'org-mit-mess',
-    name: 'MIT Hostel Mess',
+    name: 'BMSIT Hostel Mess',
     type: 'mess',
-    address: 'MIT Campus, Block 5, Manipal',
+    address: 'BMSIT Campus, Block 5',
     lat: 13.3525,
     lng: 74.7928,
     verified: true,
@@ -24,9 +24,9 @@ const INITIAL_ORGS: Organization[] = [
   },
   {
     id: 'org-food-court',
-    name: 'Food Court 1',
+    name: 'BMSIT Food Court',
     type: 'canteen',
-    address: 'Student Plaza, Campus Hub, Manipal',
+    address: 'Student Plaza, BMSIT Campus Hub',
     lat: 13.3512,
     lng: 74.7905,
     verified: true,
@@ -73,7 +73,7 @@ const INITIAL_ORGS: Organization[] = [
   },
   {
     id: 'ngo-manipal-foodbank',
-    name: 'Manipal Food Bank',
+    name: 'BMSIT Food Bank',
     type: 'ngo',
     address: 'Eshwar Nagar, Manipal',
     lat: 13.3610,
@@ -136,7 +136,7 @@ const INITIAL_ORGS: Organization[] = [
 const INITIAL_VOLUNTEER: VolunteerProfile = {
   id: 'vol-1',
   userId: 'user-vol-1',
-  name: 'Alex Johnson (Student Volunteer)',
+  name: 'Alex Johnson (BMSIT Volunteer)',
   phone: '+91 98765 99999',
   lat: 13.3530,
   lng: 74.7920,
@@ -158,7 +158,7 @@ const INITIAL_DONATIONS: Donation[] = [
   {
     id: 'DON-101',
     providerOrgId: 'org-mit-mess',
-    providerName: 'MIT Hostel Mess',
+    providerName: 'BMSIT Hostel Mess',
     foodName: 'Rice, Dal, Mixed Veg & Paneer Curry',
     servingsListed: 120,
     dietaryType: 'Vegetarian',
@@ -168,7 +168,7 @@ const INITIAL_DONATIONS: Donation[] = [
     safeUntil: in1Hour,
     lat: 13.3525,
     lng: 74.7928,
-    address: 'MIT Campus, Block 5, Manipal',
+    address: 'BMSIT Campus, Block 5',
     status: 'OPEN',
     urgency: 'URGENT',
     imageUrl: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=600&q=80',
@@ -178,7 +178,7 @@ const INITIAL_DONATIONS: Donation[] = [
     deliveryCode: '3104',
     matchedNgos: [
       { orgId: 'ngo-helping-hands', name: 'Helping Hands NGO', distanceKm: 1.2, etaMinutes: 8, capacityFit: true, dietaryFit: true, score: 94, notified: true, status: 'pending' },
-      { orgId: 'ngo-manipal-foodbank', name: 'Manipal Food Bank', distanceKm: 2.1, etaMinutes: 12, capacityFit: true, dietaryFit: true, score: 88, notified: true, status: 'pending' },
+      { orgId: 'ngo-manipal-foodbank', name: 'BMSIT Food Bank', distanceKm: 2.1, etaMinutes: 12, capacityFit: true, dietaryFit: true, score: 88, notified: true, status: 'pending' },
       { orgId: 'ngo-annapoorna', name: 'Annapoorna Trust', distanceKm: 2.4, etaMinutes: 14, capacityFit: true, dietaryFit: true, score: 85, notified: true, status: 'pending' },
       { orgId: 'ngo-green-plate', name: 'Green Plate Foundation', distanceKm: 3.0, etaMinutes: 18, capacityFit: false, dietaryFit: true, score: 72, notified: true, status: 'pending' },
       { orgId: 'ngo-hope-shelter', name: 'Hope Shelter', distanceKm: 3.5, etaMinutes: 20, capacityFit: false, dietaryFit: true, score: 68, notified: true, status: 'pending' }
@@ -187,7 +187,7 @@ const INITIAL_DONATIONS: Donation[] = [
   {
     id: 'DON-102',
     providerOrgId: 'org-food-court',
-    providerName: 'Food Court 1',
+    providerName: 'BMSIT Food Court',
     foodName: 'Veg Hakka Noodles & Fried Rice',
     servingsListed: 50,
     dietaryType: 'Vegetarian',
@@ -197,7 +197,7 @@ const INITIAL_DONATIONS: Donation[] = [
     safeUntil: in2Hours,
     lat: 13.3512,
     lng: 74.7905,
-    address: 'Student Plaza, Campus Hub, Manipal',
+    address: 'Student Plaza, BMSIT Campus Hub',
     status: 'PICKUP_PENDING',
     urgency: 'MEDIUM',
     imageUrl: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80',
@@ -207,7 +207,7 @@ const INITIAL_DONATIONS: Donation[] = [
     acceptedByOrgName: 'Helping Hands NGO',
     pickupMode: 'volunteer',
     volunteerId: 'vol-1',
-    volunteerName: 'Alex Johnson (Student Volunteer)',
+    volunteerName: 'Alex Johnson (BMSIT Volunteer)',
     pickupCode: '5719',
     deliveryCode: '9041'
   },
@@ -266,7 +266,7 @@ const INITIAL_HISTORY: StatusHistoryEntry[] = [
     donationId: 'DON-101',
     fromStatus: 'DRAFT',
     toStatus: 'OPEN',
-    actor: 'MIT Hostel Mess (Provider)',
+    actor: 'BMSIT Hostel Mess (Provider)',
     reasonCode: 'PUBLISHED',
     timestamp: new Date(now.getTime() - 30 * 60 * 1000).toISOString()
   },
@@ -391,6 +391,28 @@ export class FoodRescueStore {
       const d102 = this.donations.find(d => d.id === 'DON-102');
       if (d102 && d102.status === 'ACCEPTED' && d102.pickupMode === 'volunteer') {
         d102.status = 'PICKUP_PENDING';
+      }
+
+      // Seamlessly migrate any cached localStorage entries to BMSIT
+      if (this.orgs) {
+        this.orgs.forEach(o => {
+          if (o.name === 'MIT Hostel Mess') o.name = 'BMSIT Hostel Mess';
+          if (o.name === 'Food Court 1') o.name = 'BMSIT Food Court';
+          if (o.name === 'Manipal Food Bank') o.name = 'BMSIT Food Bank';
+          if (o.address.includes('MIT Campus')) o.address = o.address.replace('MIT Campus', 'BMSIT Campus');
+        });
+      }
+      if (this.donations) {
+        this.donations.forEach(d => {
+          if (d.providerName === 'MIT Hostel Mess') d.providerName = 'BMSIT Hostel Mess';
+          if (d.providerName === 'Food Court 1') d.providerName = 'BMSIT Food Court';
+          if (d.address.includes('MIT Campus')) d.address = d.address.replace('MIT Campus', 'BMSIT Campus');
+          if (d.matchedNgos) {
+            d.matchedNgos.forEach(m => {
+              if (m.name === 'Manipal Food Bank') m.name = 'BMSIT Food Bank';
+            });
+          }
+        });
       }
     } catch {
       this.donations = INITIAL_DONATIONS;
