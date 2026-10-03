@@ -19,11 +19,14 @@ import {
   RotateCcw
 } from 'lucide-react';
 
+import { UserAuthData } from './Navbar';
+
 interface ProviderDashboardProps {
   donations: Donation[];
   organizations: Organization[];
   isCreateModalOpen: boolean;
   setIsCreateModalOpen: (open: boolean) => void;
+  currentUser?: UserAuthData | null;
 }
 
 export const ProviderDashboard: React.FC<ProviderDashboardProps> = ({
@@ -31,6 +34,7 @@ export const ProviderDashboard: React.FC<ProviderDashboardProps> = ({
   organizations,
   isCreateModalOpen,
   setIsCreateModalOpen,
+  currentUser
 }) => {
   const [activeTab, setActiveTab] = useState<'active' | 'past' | 'analytics'>('active');
   const [selectedDonationForView, setSelectedDonationForView] = useState<Donation | null>(null);
@@ -103,9 +107,16 @@ export const ProviderDashboard: React.FC<ProviderDashboardProps> = ({
       {/* Top Banner matching Mockup */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            Provider Dashboard
-          </h1>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+              Provider Dashboard
+            </h1>
+            {currentUser && (
+              <span className="text-xs px-2.5 py-1 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-md font-bold">
+                Coordinator: {currentUser.name}
+              </span>
+            )}
+          </div>
           <p className="text-sm text-slate-500 mt-1">
             List your surplus food and help it reach verified community kitchens while still fresh.
           </p>

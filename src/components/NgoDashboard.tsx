@@ -18,17 +18,20 @@ import {
   Package
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { UserAuthData } from './Navbar';
 
 interface NgoDashboardProps {
   donations: Donation[];
   organizations: Organization[];
   volunteer: VolunteerProfile;
+  currentUser?: UserAuthData | null;
 }
 
 export const NgoDashboard: React.FC<NgoDashboardProps> = ({
   donations,
   organizations,
-  volunteer
+  volunteer,
+  currentUser
 }) => {
   const [selectedDonationToAccept, setSelectedDonationToAccept] = useState<Donation | null>(null);
   const [selectedDonationToDecline, setSelectedDonationToDecline] = useState<Donation | null>(null);
@@ -118,6 +121,11 @@ export const NgoDashboard: React.FC<NgoDashboardProps> = ({
             <span className="text-[11px] px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-semibold border border-emerald-200">
               ✓ Verified Partner
             </span>
+            {currentUser && (
+              <span className="text-[11px] px-2 py-0.5 rounded-md bg-blue-100 text-blue-900 font-bold border border-blue-200">
+                Representative: {currentUser.name}
+              </span>
+            )}
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
             NGO Dashboard

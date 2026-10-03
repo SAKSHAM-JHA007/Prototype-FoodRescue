@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Persona, UserRole } from './types';
 import { store } from './services/store';
-import { Navbar } from './components/Navbar';
+import { Navbar, UserAuthData } from './components/Navbar';
 import { LandingPage } from './components/LandingPage';
 import { ProviderDashboard } from './components/ProviderDashboard';
 import { NgoDashboard } from './components/NgoDashboard';
@@ -14,6 +14,16 @@ export const App: React.FC = () => {
   const [currentPersona, setCurrentPersona] = useState<Persona>('landing');
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  // Authenticated user state (persisted in localStorage)
+  const [currentUser, setCurrentUser] = useState<UserAuthData | null>(() => {
+    try {
+      const saved = localStorage.getItem('foodrescue_active_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
 
   // Store data with live subscription
   const [donations, setDonations] = useState(store.getDonations());
@@ -36,11 +46,37 @@ export const App: React.FC = () => {
     (d.urgency === 'CRITICAL' || d.urgency === 'URGENT')
   ).length;
 
-  const handleRoleSelectedFromAuth = (role: UserRole) => {
-    if (role === 'provider') setCurrentPersona('provider');
-    else if (role === 'ngo') setCurrentPersona('ngo');
-    else if (role === 'volunteer') setCurrentPersona('volunteer');
-    else if (role === 'admin') setCurrentPersona('admin');
+  const handleSignIn = (userData: UserAuthData) => {
+    setCurrentUser(userData);
+    try {
+      localStorage.setItem('foodrescue_active_user', JSON.stringify(userData));
+    } catch (e) {
+      console.error(e);
+    }
+
+    // If signed in as volunteer, also update the store's volunteer name
+    if (userData.role === 'volunteer') {
+      store.updateVolunteerProfile({
+        name: userData.name,
+        phone: userData.phone || store.getVolunteer().phone
+      });
+    }
+
+    // Switch view to their role
+    if (userData.role === 'provider') setCurrentPersona('provider');
+    else if (userData.role === 'ngo') setCurrentPersona('ngo');
+    else if (userData.role === 'volunteer') setCurrentPersona('volunteer');
+    else if (userData.role === 'admin') setCurrentPersona('admin');
+  };
+
+  const handleSignOut = () => {
+    setCurrentUser(null);
+    try {
+      localStorage.removeItem('foodrescue_active_user');
+    } catch (e) {
+      console.error(e);
+    }
+    setCurrentPersona('landing');
   };
 
   return (
@@ -52,6 +88,8 @@ export const App: React.FC = () => {
         onSelectPersona={setCurrentPersona}
         onOpenAuth={() => setIsAuthOpen(true)}
         urgentCount={urgentCount}
+        currentUser={currentUser}
+        onSignOut={handleSignOut}
       />
 
       {/* Main Content Router */}
@@ -63,6 +101,8 @@ export const App: React.FC = () => {
               setCurrentPersona('provider');
               setIsCreateModalOpen(true);
             }}
+            currentUser={currentUser}
+            onOpenAuth={() => setIsAuthOpen(true)}
           />
         )}
 
@@ -72,6 +112,7 @@ export const App: React.FC = () => {
             organizations={organizations}
             isCreateModalOpen={isCreateModalOpen}
             setIsCreateModalOpen={setIsCreateModalOpen}
+            currentUser={currentUser}
           />
         )}
 
@@ -80,6 +121,7 @@ export const App: React.FC = () => {
             donations={donations}
             organizations={organizations}
             volunteer={volunteer}
+            currentUser={currentUser}
           />
         )}
 
@@ -88,6 +130,7 @@ export const App: React.FC = () => {
             donations={donations}
             organizations={organizations}
             volunteer={volunteer}
+            currentUser={currentUser}
           />
         )}
 
@@ -109,7 +152,9 @@ export const App: React.FC = () => {
       <AuthModal
         isOpen={isAuthOpen}
         onClose={() => setIsAuthOpen(false)}
-        onSelectRole={handleRoleSelectedFromAuth}
+        onSignIn={handleSignIn}
+        defaultRole={currentUser?.role || (currentPersona === 'ngo' ? 'ngo' : currentPersona === 'volunteer' ? 'volunteer' : 'provider')}
+        currentUserName={currentUser?.name}
       />
 
     </div>

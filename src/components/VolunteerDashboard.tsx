@@ -25,17 +25,20 @@ import {
   ChevronRight
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { UserAuthData } from './Navbar';
 
 interface VolunteerDashboardProps {
   donations: Donation[];
   organizations: Organization[];
   volunteer: VolunteerProfile;
+  currentUser?: UserAuthData | null;
 }
 
 export const VolunteerDashboard: React.FC<VolunteerDashboardProps> = ({
   donations,
   organizations,
-  volunteer
+  volunteer,
+  currentUser
 }) => {
   const [activeTab, setActiveTab] = useState<'mission' | 'available' | 'impact'>('mission');
   const [pickupCodeInput, setPickupCodeInput] = useState('');
@@ -184,7 +187,7 @@ export const VolunteerDashboard: React.FC<VolunteerDashboardProps> = ({
               🚴
             </div>
             <div>
-              <h4 className="text-xs font-bold text-slate-900">{volunteer.name}</h4>
+              <h4 className="text-xs font-bold text-slate-900">{currentUser?.name || volunteer.name}</h4>
               <p className="text-[11px] text-slate-500 font-medium">
                 {volunteer.completedRescues} Runs • {Math.round(volunteer.reliabilityScore * 100)}% Rating
               </p>

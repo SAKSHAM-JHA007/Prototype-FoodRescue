@@ -15,15 +15,20 @@ import {
   Building2,
   Users
 } from 'lucide-react';
+import { UserAuthData } from './Navbar';
 
 interface LandingPageProps {
   onSelectPersona: (persona: Persona) => void;
   onOpenCreateDonation: () => void;
+  currentUser?: UserAuthData | null;
+  onOpenAuth?: () => void;
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({
   onSelectPersona,
-  onOpenCreateDonation
+  onOpenCreateDonation,
+  currentUser,
+  onOpenAuth
 }) => {
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -40,9 +45,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {/* Left Column: Human Value Prop */}
             <div className="lg:col-span-7 space-y-6">
               
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-emerald-50 border border-emerald-200/80 text-emerald-900 text-xs font-bold tracking-tight">
-                <span className="w-2 h-2 rounded-xs bg-emerald-600" />
-                Single-Campus Food Rescue Pilot
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-emerald-50 border border-emerald-200/80 text-emerald-900 text-xs font-bold tracking-tight">
+                  <span className="w-2 h-2 rounded-xs bg-emerald-600" />
+                  Single-Campus Food Rescue Pilot
+                </div>
+
+                {currentUser && (
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-slate-100 border border-slate-200 text-slate-800 text-xs font-semibold">
+                    <span>👋 Welcome, <strong>{currentUser.name}</strong></span>
+                  </div>
+                )}
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.12]">

@@ -723,6 +723,12 @@ export class FoodRescueStore {
     this.saveState();
   }
 
+  // Update Volunteer Profile (Name, Phone, etc.)
+  public updateVolunteerProfile(updates: Partial<VolunteerProfile>) {
+    this.volunteer = { ...this.volunteer, ...updates };
+    this.saveState();
+  }
+
   // Simulate Instant Demo Volunteer Run
   public createDemoVolunteerTask(): Donation {
     const providers = this.orgs.filter(o => o.type !== 'ngo' && o.type !== 'shelter');
