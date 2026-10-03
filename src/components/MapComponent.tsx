@@ -160,13 +160,13 @@ export const MapComponent: React.FC<MapComponentProps> = ({
       {/* Legend Badge */}
       <div className="absolute top-3 right-3 z-20 bg-white/95 backdrop-blur px-3 py-2 rounded-xl shadow-card border border-slate-200/80 text-[11px] font-semibold flex items-center gap-3">
         <span className="flex items-center gap-1.5 text-emerald-700">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" /> Food Provider
+          <span className="w-2.5 h-2.5 rounded-xs bg-emerald-500 inline-block" /> Food Provider
         </span>
         <span className="flex items-center gap-1.5 text-blue-700">
-          <span className="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block" /> Partner NGO
+          <span className="w-2.5 h-2.5 rounded-xs bg-blue-600 inline-block" /> Partner NGO
         </span>
         <span className="flex items-center gap-1.5 text-orange-700">
-          <span className="w-2.5 h-2.5 rounded-full bg-orange-500 inline-block" /> Volunteer
+          <span className="w-2.5 h-2.5 rounded-xs bg-orange-500 inline-block" /> Volunteer
         </span>
       </div>
 

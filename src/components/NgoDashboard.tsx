@@ -111,11 +111,11 @@ export const NgoDashboard: React.FC<NgoDashboardProps> = ({
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-blue-600" />
+            <span className="w-2.5 h-2.5 rounded-xs bg-blue-600" />
             <span className="text-xs font-bold text-blue-700 uppercase tracking-wide">
               {currentNgo.name}
             </span>
-            <span className="text-[11px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold">
+            <span className="text-[11px] px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-semibold border border-emerald-200">
               ✓ Verified Partner
             </span>
           </div>

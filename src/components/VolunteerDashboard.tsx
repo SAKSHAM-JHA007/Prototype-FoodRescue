@@ -66,8 +66,8 @@ export const VolunteerDashboard: React.FC<VolunteerDashboardProps> = ({
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs font-bold text-emerald-700 uppercase tracking-wide">
+            <span className="w-2.5 h-2.5 rounded-xs bg-emerald-600 animate-pulse" />
+            <span className="text-xs font-bold text-emerald-800 uppercase tracking-wide">
               Campus Rescue Network
             </span>
           </div>
@@ -98,7 +98,7 @@ export const VolunteerDashboard: React.FC<VolunteerDashboardProps> = ({
         <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-brand-950 text-white p-6 sm:p-7 rounded-3xl shadow-xl space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <span className="px-3 py-1 bg-brand-500 text-white rounded-full text-xs font-bold tracking-wide">
+              <span className="px-3 py-1 bg-emerald-600 text-white rounded-md text-xs font-bold tracking-wide">
                 ACTIVE RESCUE MISSION
               </span>
               <h3 className="text-xl sm:text-2xl font-bold mt-2">
@@ -237,7 +237,7 @@ export const VolunteerDashboard: React.FC<VolunteerDashboardProps> = ({
                     {/* Route Info */}
                     <div className="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-2">
                       <div className="flex items-start gap-2">
-                        <span className="w-2 h-2 rounded-full bg-emerald-600 mt-1" />
+                        <span className="w-2 h-2 rounded-xs bg-emerald-600 mt-1" />
                         <div>
                           <p className="text-[10px] text-slate-400 font-bold">FROM PROVIDER</p>
                           <p className="font-semibold text-slate-800">{task.providerName}</p>
@@ -246,7 +246,7 @@ export const VolunteerDashboard: React.FC<VolunteerDashboardProps> = ({
                       </div>
 
                       <div className="flex items-start gap-2 pt-2 border-t border-slate-200/60">
-                        <span className="w-2 h-2 rounded-full bg-blue-600 mt-1" />
+                        <span className="w-2 h-2 rounded-xs bg-blue-600 mt-1" />
                         <div>
                           <p className="text-[10px] text-slate-400 font-bold">TO RECIPIENT NGO</p>
                           <p className="font-semibold text-slate-800">{task.acceptedByOrgName || 'Helping Hands NGO'}</p>

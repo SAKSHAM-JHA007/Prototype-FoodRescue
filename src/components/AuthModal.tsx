@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { UserRole } from '../types';
 import { X, Check, Lock, Mail, Phone, User, Store, HeartHandshake, Truck } from 'lucide-react';
+import { Logo } from './Logo';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -36,18 +37,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-slate-400 hover:text-slate-700 p-1 rounded-full hover:bg-slate-100 transition-colors"
+          className="absolute top-5 right-5 text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Brand Logo Header */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center gap-2 mb-2">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-700 to-emerald-400 flex items-center justify-center shadow-xs">
-              <span className="text-sm">🌱</span>
-            </div>
-            <span className="text-xl font-extrabold text-slate-900 tracking-tight">FoodRescue</span>
+          <div className="flex justify-center mb-3">
+            <Logo size="md" />
           </div>
           <h3 className="text-xl font-extrabold text-slate-900">
             {mode === 'login' ? 'Welcome Back!' : 'Join Campus FoodRescue'}

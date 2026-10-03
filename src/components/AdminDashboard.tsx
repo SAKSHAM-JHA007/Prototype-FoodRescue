@@ -59,8 +59,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-amber-500 animate-pulse" />
-            <span className="text-xs font-bold text-amber-700 uppercase tracking-wide">
+            <span className="w-2.5 h-2.5 rounded-xs bg-amber-600 animate-pulse" />
+            <span className="text-xs font-bold text-amber-800 uppercase tracking-wide">
               Campus Operations Command
             </span>
           </div>

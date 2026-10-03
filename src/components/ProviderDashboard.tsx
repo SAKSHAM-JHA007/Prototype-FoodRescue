@@ -381,7 +381,7 @@ export const ProviderDashboard: React.FC<ProviderDashboardProps> = ({
         <div className="bg-white p-6 rounded-2xl border border-slate-200 space-y-6">
           <div className="flex items-center justify-between">
             <h3 className="font-bold text-slate-900 text-base">Campus Waste Diversion Metrics</h3>
-            <span className="text-xs font-semibold text-brand-700 bg-brand-50 px-2.5 py-1 rounded-full border border-brand-200">
+            <span className="text-xs font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
               MIT Campus Pilot
             </span>
           </div>
@@ -415,14 +415,14 @@ export const ProviderDashboard: React.FC<ProviderDashboardProps> = ({
             
             <div className="flex items-center justify-between pb-4 border-b border-slate-100">
               <div>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-brand-50 text-brand-700 text-xs font-bold border border-brand-200">
-                  <span>⏱️</span> Under 60s Listing
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200">
+                  <span>⏱️</span> Under 60s Fast Listing
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mt-1">Create New Donation</h3>
               </div>
               <button 
                 onClick={() => setIsCreateModalOpen(false)}
-                className="p-1.5 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -607,9 +607,9 @@ export const ProviderDashboard: React.FC<ProviderDashboardProps> = ({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
           <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-100 text-center animate-fade-in">
             
-            {/* Green Animated Success Circle */}
-            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4 border-2 border-emerald-300">
-              <CheckCircle2 className="w-10 h-10" />
+            {/* Green Animated Success Badge */}
+            <div className="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-4 border border-emerald-300">
+              <CheckCircle2 className="w-9 h-9" />
             </div>
 
             <h3 className="text-2xl font-extrabold text-slate-900">Donation Sent!</h3>
@@ -618,11 +618,11 @@ export const ProviderDashboard: React.FC<ProviderDashboardProps> = ({
             </p>
 
             {/* Donation Quick Card */}
-            <div className="my-5 p-3.5 bg-slate-50 rounded-2xl border border-slate-200 text-left flex items-center gap-3">
+            <div className="my-5 p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-left flex items-center gap-3">
               <img
                 src={createdDonationSuccess.imageUrl}
                 alt={createdDonationSuccess.foodName}
-                className="w-14 h-14 rounded-xl object-cover"
+                className="w-14 h-14 rounded-lg object-cover"
               />
               <div className="flex-1 min-w-0">
                 <h4 className="font-bold text-xs text-slate-900 truncate">
@@ -632,7 +632,7 @@ export const ProviderDashboard: React.FC<ProviderDashboardProps> = ({
                   {createdDonationSuccess.servingsListed} meals • {createdDonationSuccess.dietaryType}
                 </p>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-[10px] text-amber-700 font-semibold bg-amber-100 px-1.5 py-0.5 rounded">
+                  <span className="text-[10px] text-amber-800 font-semibold bg-amber-100 px-2 py-0.5 rounded-md border border-amber-200">
                     Pickup before {new Date(createdDonationSuccess.safeUntil).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>
@@ -649,13 +649,13 @@ export const ProviderDashboard: React.FC<ProviderDashboardProps> = ({
                 {createdDonationSuccess.matchedNgos?.map((ngo, idx) => (
                   <div key={idx} className="p-2.5 flex items-center justify-between bg-white hover:bg-slate-50">
                     <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                      <span className="w-2 h-2 rounded-xs bg-emerald-600" />
                       <div>
                         <p className="font-semibold text-slate-800 text-[11px]">{ngo.name}</p>
                         <p className="text-[10px] text-slate-400">{ngo.distanceKm} km away</p>
                       </div>
                     </div>
-                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
                       ✓ Notified
                     </span>
                   </div>
