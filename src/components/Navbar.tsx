@@ -80,29 +80,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Truck className="w-3.5 h-3.5" /> Volunteer Courier
             </button>
-
-            <button
-              onClick={() => onSelectPersona('admin')}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
-                currentPersona === 'admin'
-                  ? 'bg-white text-amber-900 shadow-xs border border-amber-200/60 font-bold'
-                  : 'text-slate-600 hover:text-amber-800'
-              }`}
-            >
-              <ShieldCheck className="w-3.5 h-3.5" /> Admin Operations
-              {urgentCount > 0 && (
-                <span className="w-2 h-2 rounded-xs bg-red-600 animate-pulse" />
-              )}
-            </button>
           </nav>
 
           {/* Right Action Controls */}
           <div className="flex items-center gap-3">
-            {/* Urgent Notification Bell */}
-            <button 
-              onClick={() => onSelectPersona('admin')}
-              className="relative p-2 text-slate-500 hover:text-slate-800 rounded-lg hover:bg-slate-100 transition-colors"
-              title="Urgent Alerts"
+            {/* Urgent Notification Indicator */}
+            <div 
+              className="relative p-2 text-slate-500 hover:text-slate-800 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
+              title={urgentCount > 0 ? `${urgentCount} urgent donations live` : 'No urgent alerts'}
+              onClick={() => onSelectPersona('ngo')}
             >
               <Bell className="w-5 h-5" />
               {urgentCount > 0 && (
@@ -110,7 +96,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   {urgentCount}
                 </span>
               )}
-            </button>
+            </div>
 
             {/* Reset Demo State Button */}
             <button
@@ -161,12 +147,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             className={`px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap ${currentPersona === 'volunteer' ? 'bg-emerald-700 text-white font-bold' : 'bg-slate-100 text-slate-700'}`}
           >
             Volunteer
-          </button>
-          <button
-            onClick={() => onSelectPersona('admin')}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap ${currentPersona === 'admin' ? 'bg-amber-700 text-white font-bold' : 'bg-slate-100 text-slate-700'}`}
-          >
-            Admin Board
           </button>
         </div>
 

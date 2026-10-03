@@ -283,11 +283,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             
             <div 
               onClick={() => onSelectPersona('provider')}
-              className="p-5 rounded-xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700 cursor-pointer hover:border-emerald-500 transition-all group"
+              className="p-6 rounded-xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700 cursor-pointer hover:border-emerald-500 transition-all group"
             >
               <div className="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold text-lg mb-3">
                 🍲
@@ -305,7 +305,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
             <div 
               onClick={() => onSelectPersona('ngo')}
-              className="p-5 rounded-xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700 cursor-pointer hover:border-blue-500 transition-all group"
+              className="p-6 rounded-xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700 cursor-pointer hover:border-blue-500 transition-all group"
             >
               <div className="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold text-lg mb-3">
                 🏢
@@ -323,7 +323,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
             <div 
               onClick={() => onSelectPersona('volunteer')}
-              className="p-5 rounded-xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700 cursor-pointer hover:border-emerald-500 transition-all group"
+              className="p-6 rounded-xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700 cursor-pointer hover:border-emerald-500 transition-all group"
             >
               <div className="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold text-lg mb-3">
                 🚴
@@ -336,24 +336,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </p>
               <div className="mt-4 text-xs font-semibold text-emerald-400 flex items-center gap-1">
                 Open Volunteer <ArrowRight className="w-3.5 h-3.5" />
-              </div>
-            </div>
-
-            <div 
-              onClick={() => onSelectPersona('admin')}
-              className="p-5 rounded-xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700 cursor-pointer hover:border-amber-500 transition-all group"
-            >
-              <div className="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold text-lg mb-3">
-                🛡️
-              </div>
-              <h4 className="font-bold text-base text-white group-hover:text-amber-400 transition-colors">
-                Admin At-Risk Board
-              </h4>
-              <p className="text-xs text-slate-400 mt-1">
-                Live monitoring of donations near expiry, broadcast radius escalations, and audit logs.
-              </p>
-              <div className="mt-4 text-xs font-semibold text-amber-400 flex items-center gap-1">
-                Open Admin <ArrowRight className="w-3.5 h-3.5" />
               </div>
             </div>
 
