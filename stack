@@ -1,0 +1,19 @@
+FRONTEND
+React.js + Vite + TypeScript + Tailwind CSS
+              ↓
+BACKEND
+Node.js + Express.js
+              ↓
+     ┌────────┼─────────┐
+     ↓        ↓         ↓
+DATABASE     AI        n8n
+Supabase   Python     Automation
+PostgreSQL FastAPI
+     ↓        ↓         ↓
+     └────────┼─────────┘
+              ↓
+      EXTERNAL SERVICES
+ Maps | FCM | Twilio | OpenAI
+              ↓
+         DEPLOYMENT
+ Vercel | Railway | Supabase

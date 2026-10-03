@@ -1,0 +1,132 @@
+{
+  "name": "FoodRescue — Urgent Notification & Expiry Escalation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "donation-event",
+        "responseMode": "onReceived",
+        "responseData": "allEntries"
+      },
+      "name": "Webhook: donation.created",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\"body\"][\"urgency\"]}}",
+              "operation": "equal",
+              "value2": "CRITICAL"
+            }
+          ]
+        }
+      },
+      "name": "Check Urgency",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "operation": "sendMessage",
+        "chatId": "-10023456789",
+        "text": "=🚨 *CRITICAL SURPLUS ALERT* 🚨\n\n*Provider:* {{$json[\"body\"][\"providerName\"]}}\n*Food:* {{$json[\"body\"][\"foodName\"]}}\n*Servings:* {{$json[\"body\"][\"servingsListed\"]}}\n*Safe Until:* {{$json[\"body\"][\"safeUntil\"]}}\n\nImmediate pickup required! Nearby NGOs please open FoodRescue app to claim.",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "name": "Broadcast Telegram Escalation",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [740, 180]
+    },
+    {
+      "parameters": {
+        "title": "New Surplus Food Available",
+        "body": "={{$json[\"body\"][\"servingsListed\"]}} meals available from {{$json[\"body\"][\"providerName\"]}}",
+        "topic": "nearby_ngos"
+      },
+      "name": "FCM Push to Matched NGOs",
+      "type": "n8n-nodes-base.firebaseCloudMessaging",
+      "typeVersion": 1,
+      "position": [740, 420]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 5
+            }
+          ]
+        }
+      },
+      "name": "Schedule: Every 5 Mins",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [240, 600]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:5000/api/donations/at-risk",
+        "responseFormat": "json"
+      },
+      "name": "Query At-Risk Donations",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [480, 600]
+    }
+  ],
+  "connections": {
+    "Webhook: donation.created": {
+      "main": [
+        [
+          {
+            "node": "Check Urgency",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Urgency": {
+      "main": [
+        [
+          {
+            "node": "Broadcast Telegram Escalation",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "FCM Push to Matched NGOs",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "FCM Push to Matched NGOs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule: Every 5 Mins": {
+      "main": [
+        [
+          {
+            "node": "Query At-Risk Donations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
