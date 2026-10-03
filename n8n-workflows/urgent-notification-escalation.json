@@ -1,5 +1,7 @@
 {
+  "id": "FRWf001UrgentEsc",
   "name": "FoodRescue — Urgent Notification & Expiry Escalation",
+  "active": true,
   "nodes": [
     {
       "parameters": {
