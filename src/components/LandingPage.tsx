@@ -101,21 +101,20 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <div className="lg:col-span-5 relative">
               <div className="relative mx-auto max-w-md lg:max-w-none">
                 
-                {/* Main Food Dish Container */}
                 <div className="relative rounded-2xl overflow-hidden shadow-xl border border-slate-200 bg-slate-900 group">
                   <img
-                    src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1000&q=80"
-                    alt="Fresh surplus meal"
+                    src="/hero-rescue.png"
+                    alt="Community volunteers passing surplus meal to person in need"
                     className="w-full h-[400px] object-cover group-hover:scale-102 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/25 to-transparent" />
                   
                   <div className="absolute bottom-5 left-5 right-5 text-white">
                     <span className="px-2.5 py-1 text-xs font-bold bg-emerald-600 text-white rounded-md mb-2 inline-block">
-                      100% Safe Surplus
+                      Hand-to-Hand Rescue
                     </span>
-                    <h3 className="text-xl font-bold">Nutritious Hot Meals Rescued Daily</h3>
-                    <p className="text-xs text-slate-300 mt-1">Connecting campus canteens & student cafeterias directly to local night shelters.</p>
+                    <h3 className="text-xl font-bold">Surplus Meals Delivered with Care</h3>
+                    <p className="text-xs text-slate-300 mt-1">Connecting cafeteria surplus directly to individuals and families across the community.</p>
                   </div>
                 </div>
 
